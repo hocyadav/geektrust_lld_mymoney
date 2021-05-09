@@ -4,9 +4,3 @@ app-config:
   inputFileName:
     - input.txt
     - input2.txt
-  validOperations:
-    - allocate
-    - sip
-    - change
-    - balance
-    - rebalance

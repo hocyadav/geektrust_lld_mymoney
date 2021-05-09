@@ -1,7 +1,6 @@
 package io.hari.mymoney;
 
 import io.hari.mymoney.config.AppConfig;
-import io.hari.mymoney.constant.UserType;
 import io.hari.mymoney.entity.Portfolio;
 import io.hari.mymoney.entity.User;
 import io.hari.mymoney.entity.input.UserOperation;
@@ -20,6 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+
+import static io.hari.mymoney.constant.UserType.investor;
 
 /**
  * @Author Hariom Yadav
@@ -57,7 +58,7 @@ public class MyMoneyApplication implements CommandLineRunner {
         userOperations.forEach(i -> log.info("user input operation : {}",i));
 
         //todo: create user
-        final User hariom = User.builder().name("hariom").type(UserType.investor).build();
+        final User user = User.builder().name("hariom yadav").userType(investor).build();
 
         //todo: create portfolio
         final Portfolio portfolio = Portfolio.builder().build();
@@ -68,6 +69,6 @@ public class MyMoneyApplication implements CommandLineRunner {
         userService.executeUserBALANCE_REBALANCEOperations(userOperations, portfolio);
 
         //todo: assign portfolio to user
-        hariom.getPortfolios().add(portfolio);
+        user.getUserPortfolios().add(portfolio);
     }
 }

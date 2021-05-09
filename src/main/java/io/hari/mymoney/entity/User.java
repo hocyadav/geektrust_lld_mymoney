@@ -21,8 +21,8 @@ public class User {
     String name;
 
     @NotNull
-    UserType type;
+    UserType userType;
 
     @Builder.Default
-    List<Portfolio> portfolios = new LinkedList<>();
+    List<Portfolio> userPortfolios = new LinkedList<>();
 }
