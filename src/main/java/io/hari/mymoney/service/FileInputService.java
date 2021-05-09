@@ -12,6 +12,7 @@ import java.util.List;
 
 import static io.hari.mymoney.constant.ActionType.*;
 import static io.hari.mymoney.constant.ConstantUtil.INVALID_OPERATION;
+import static io.hari.mymoney.constant.ConstantUtil.SPACE_REGEX;
 
 /**
  * @Author Hariom Yadav
@@ -85,7 +86,7 @@ public class FileInputService {
 
 
     private void validateUserOperation(@NonNull final String operation, final int length) {
-        if (operation.split(" ").length < length) {
+        if (operation.split(SPACE_REGEX).length < length) {
             log.info(INVALID_OPERATION + " :[{}]", operation);
             throw new RuntimeException(INVALID_OPERATION + " : " + operation);
         }
