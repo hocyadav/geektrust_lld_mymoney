@@ -47,41 +47,41 @@ public class FileInputService {
     public UserOperationChange getCHANGEOperation(@NonNull final String operation) {
         validateUserOperation(operation, 5);
         final String[] tokens = operation.split(" ");
-        final UserOperationChange operationChange = UserOperationChange.builder()
+        final UserOperationChange userOperation = UserOperationChange.builder()
                 .operation(change)
                 .equityPercent(tokens[1])
                 .deptPercent(tokens[2])
                 .goldPercent(tokens[3])
                 .month(tokens[4])
                 .build();
-        log.info("Operation [{}]    ,   input [{}]", operationChange.getOperation().name().toUpperCase(), operation);
-        return operationChange;
+        log.info("Operation [{}]    ,   input [{}]", userOperation.getOperation().name().toUpperCase(), operation);
+        return userOperation;
     }
 
     public UserOperationAllocate getALLOCATEOperation(@NonNull final String operation) {
         validateUserOperation(operation, 4);
         final String[] tokens = operation.split(" ");
-        final UserOperationAllocate operationAllocate = UserOperationAllocate.builder()
+        final UserOperationAllocate userOperation = UserOperationAllocate.builder()
                 .operation(allocate)
                 .equity(new BigInteger(tokens[1]))
                 .dept(new BigInteger(tokens[2]))
                 .gold(new BigInteger(tokens[3]))
                 .build();
-        log.info("Operation [{}]    ,   input [{}]", operationAllocate.getOperation().name().toUpperCase(), operation);
-        return operationAllocate;
+        log.info("Operation [{}]    ,   input [{}]", userOperation.getOperation().name().toUpperCase(), operation);
+        return userOperation;
     }
 
     public UserOperationSIP getSIPOperation(@NonNull final String operation) {
         validateUserOperation(operation, 4);
         final String[] tokens = operation.split(" ");
-        final UserOperationSIP operationSIP = UserOperationSIP.builder()
+        final UserOperationSIP userOperation = UserOperationSIP.builder()
                 .operation(sip)
                 .equity(new BigInteger(tokens[1]))
                 .dept(new BigInteger(tokens[2]))
                 .gold(new BigInteger(tokens[3]))
                 .build();
-        log.info("Operation [{}]    ,   input [{}]", operationSIP.getOperation().name().toUpperCase(), operation);
-        return operationSIP;
+        log.info("Operation [{}]    ,   input [{}]", userOperation.getOperation().name().toUpperCase(), operation);
+        return userOperation;
     }
 
 
