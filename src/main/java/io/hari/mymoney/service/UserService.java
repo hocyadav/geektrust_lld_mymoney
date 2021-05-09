@@ -1,6 +1,5 @@
 package io.hari.mymoney.service;
 
-import io.hari.mymoney.constant.ActionType;
 import io.hari.mymoney.entity.Portfolio;
 import io.hari.mymoney.entity.input.UserOperation;
 import io.hari.mymoney.entity.input.UserOperationBalance;
@@ -22,15 +21,14 @@ public class UserService {
     private final PortfolioService portfolioService;
 
     public void executeUserBALANCE_REBALANCEOperations(List<UserOperation> userOperations, Portfolio portfolio) {
-        userOperations.stream().filter(i -> i.getOperation().equals(balance) || i.getOperation().equals(rebalance)).forEach(i -> {
-            final ActionType operation = i.getOperation();
-            final UserOperation i1 = i;
-            if (operation.equals(balance)) {
-                final UserOperationBalance userOperationBalance = UserOperationBalance.class.cast(i1);
-                System.out.println(portfolioService.getBalanceOperation(portfolio, userOperationBalance.getMonth()));
-            } else if (operation.equals(rebalance)) {
-                System.out.println(portfolioService.getReBalanceOperation(portfolio));
-            }
-        });
+        userOperations.stream().filter(i -> i.getOperation().equals(balance) || i.getOperation().equals(rebalance))
+                .forEach(userOperation -> {
+                    if (userOperation.getOperation().equals(balance)) {
+                        final UserOperationBalance userOperationBalance = UserOperationBalance.class.cast(userOperation);
+                        System.out.println(portfolioService.getBALANCEOperation(portfolio, userOperationBalance.getMonth()));
+                    } else if (userOperation.getOperation().equals(rebalance)) {
+                        System.out.println(portfolioService.getReBALANCEOperation(portfolio));
+                    }
+                });
     }
 }

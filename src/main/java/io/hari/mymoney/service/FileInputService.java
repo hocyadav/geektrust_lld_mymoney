@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 
-import static io.hari.mymoney.constant.ActionType.rebalance;
+import static io.hari.mymoney.constant.ActionType.*;
 import static io.hari.mymoney.constant.ConstantUtil.INVALID_OPERATION;
 
 /**
@@ -21,33 +21,33 @@ import static io.hari.mymoney.constant.ConstantUtil.INVALID_OPERATION;
 @Slf4j
 public class FileInputService {
 
-    public void readInputFile(List<UserOperation> abstracts, String line) {
-        if (line.contains(ActionType.allocate.name()))
-            abstracts.add(allocateOperation(line));
+    public void readInputFile(List<UserOperation> userOperations, String operation) {
+        if (operation.contains(allocate.name()))
+            userOperations.add(getALLOCATEOperation(operation));
 
-        else if (line.contains(ActionType.sip.name()))
-            abstracts.add(sipOperation(line));
+        else if (operation.contains(sip.name()))
+            userOperations.add(getSIPOperation(operation));
 
-        else if (line.contains(ActionType.change.name()))
-            abstracts.add(changeOperation(line));
+        else if (operation.contains(change.name()))
+            userOperations.add(getCHANGEOperation(operation));
 
-        else if (line.contains(rebalance.name()))
-            abstracts.add(UserOperationReBalance.builder().operation(rebalance).build());
+        else if (operation.contains(rebalance.name()))
+            userOperations.add(UserOperationReBalance.builder().operation(rebalance).build());
 
-        else if (line.contains(ActionType.balance.name())) {
-            final String[] tokens = line.split(" ");
-            final UserOperationBalance operationBalance = UserOperationBalance.builder().operation(ActionType.balance)
+        else if (operation.contains(balance.name())) {
+            final String[] tokens = operation.split(" ");
+            final UserOperationBalance operationBALANCE = UserOperationBalance.builder().operation(ActionType.balance)
                     .month(Month.valueOf(tokens[1].toLowerCase()))
                     .build();
-            abstracts.add(operationBalance);
+            userOperations.add(operationBALANCE);
         } else throw new RuntimeException("invalid operation");
     }
 
-    public UserOperationChange changeOperation(@NonNull final String operation) {
-        validateOperation(operation, 5);
+    public UserOperationChange getCHANGEOperation(@NonNull final String operation) {
+        validateUserOperation(operation, 5);
         final String[] tokens = operation.split(" ");
         final UserOperationChange operationChange = UserOperationChange.builder()
-                .operation(ActionType.change)
+                .operation(change)
                 .equityPercent(tokens[1])
                 .deptPercent(tokens[2])
                 .goldPercent(tokens[3])
@@ -57,11 +57,11 @@ public class FileInputService {
         return operationChange;
     }
 
-    public UserOperationAllocate allocateOperation(@NonNull final String operation) {
-        validateOperation(operation, 4);
+    public UserOperationAllocate getALLOCATEOperation(@NonNull final String operation) {
+        validateUserOperation(operation, 4);
         final String[] tokens = operation.split(" ");
         final UserOperationAllocate operationAllocate = UserOperationAllocate.builder()
-                .operation(ActionType.allocate)
+                .operation(allocate)
                 .equity(new BigInteger(tokens[1]))
                 .dept(new BigInteger(tokens[2]))
                 .gold(new BigInteger(tokens[3]))
@@ -70,11 +70,11 @@ public class FileInputService {
         return operationAllocate;
     }
 
-    public UserOperationSIP sipOperation(@NonNull final String operation) {
-        validateOperation(operation, 4);
+    public UserOperationSIP getSIPOperation(@NonNull final String operation) {
+        validateUserOperation(operation, 4);
         final String[] tokens = operation.split(" ");
         final UserOperationSIP operationSIP = UserOperationSIP.builder()
-                .operation(ActionType.sip)
+                .operation(sip)
                 .equity(new BigInteger(tokens[1]))
                 .dept(new BigInteger(tokens[2]))
                 .gold(new BigInteger(tokens[3]))
@@ -84,7 +84,7 @@ public class FileInputService {
     }
 
 
-    private void validateOperation(@NonNull final String operation, final int length) {
+    private void validateUserOperation(@NonNull final String operation, final int length) {
         if (operation.split(" ").length < length) {
             log.info(INVALID_OPERATION + " :[{}]", operation);
             throw new RuntimeException(INVALID_OPERATION + " : " + operation);

@@ -39,7 +39,7 @@ public class PortfolioService {
      * Approach:
      * get month object -> fetch after_market_change
      */
-    public String getBalanceOperation(@NonNull final Portfolio portfolio, @NonNull final Month month) {
+    public String getBALANCEOperation(@NonNull final Portfolio portfolio, @NonNull final Month month) {
         log.info("getBalanceOperation :{}", month.name().toUpperCase());
         AtomicReference<String> result = new AtomicReference<>(NO_BALANCE);
 
@@ -53,7 +53,7 @@ public class PortfolioService {
         return result.get();
     }
 
-    public String getReBalanceOperation(@NonNull final Portfolio portfolio) {
+    public String getReBALANCEOperation(@NonNull final Portfolio portfolio) {
         log.info("getReBalanceOperation called");
         final Map<Month, Portfolio.PortfolioOperation> portfolioOperations = portfolio.getPortfolioOperations();
 
