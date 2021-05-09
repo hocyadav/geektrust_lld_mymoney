@@ -1,7 +1,9 @@
 # app config
 app-config:
   reBalanceLimit: 6
-  inputFileName: "input2.txt"
+  inputFileName:
+    - input.txt
+    - input2.txt
   validOperations:
     - allocate
     - sip

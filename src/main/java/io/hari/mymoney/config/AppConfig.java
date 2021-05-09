@@ -20,6 +20,6 @@ import java.util.Set;
 public class AppConfig {
     private Integer reBalanceLimit;
     private Set<ActionType> validOperations;
-    private String inputFileName;
+    private List<String> inputFileName;
 }
 

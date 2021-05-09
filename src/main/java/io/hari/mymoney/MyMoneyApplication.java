@@ -14,6 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -40,13 +41,19 @@ public class MyMoneyApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //todo: read file name from config
-        final String inputFileName = config.getInputFileName();
+        final List<String> inputFileName = config.getInputFileName();
+        for (String filePath: inputFileName) {
+            executeUserFileOperation(filePath);
+            System.out.println();
+        }
+    }
 
+    private void executeUserFileOperation(String filePath) throws IOException {
         List<UserOperation> userOperations = new LinkedList<>();
-        Files.readAllLines(Paths.get(inputFileName)).forEach(line -> fileInputService.readInputFile(userOperations, line.toLowerCase()));
+        Files.readAllLines(Paths.get(filePath)).forEach(line -> fileInputService.readInputFile(userOperations, line.toLowerCase()));
 
         //todo : print user operations
-		userOperations.forEach(i -> log.info("user input operation : {}",i));
+        userOperations.forEach(i -> log.info("user input operation : {}",i));
 
         //todo: create user
         final User hariom = User.builder().name("hariom").type(UserType.investor).build();
@@ -57,9 +64,9 @@ public class MyMoneyApplication implements CommandLineRunner {
         portfolioService.executeUserCHANGEOperation(portfolio, userOperations);
 
         //todo: execute user operations
-		userService.executeUserBALANCE_REBALANCEOperations(userOperations, portfolio);
+        userService.executeUserBALANCE_REBALANCEOperations(userOperations, portfolio);
 
-		//todo: assign portfolio to user
+        //todo: assign portfolio to user
         hariom.getPortfolios().add(portfolio);
-	}
+    }
 }
