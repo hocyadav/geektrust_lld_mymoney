@@ -85,8 +85,8 @@ public class FileInputService {
     }
 
 
-    private void validateUserOperation(@NonNull final String operation, final int length) {
-        if (operation.split(SPACE_REGEX).length < length) {
+    private void validateUserOperation(@NonNull final String operation, final int requiredTokenLength) {
+        if (operation.split(SPACE_REGEX).length < requiredTokenLength) {
             log.info(INVALID_OPERATION + " :[{}]", operation);
             throw new RuntimeException(INVALID_OPERATION + " : " + operation);
         }
