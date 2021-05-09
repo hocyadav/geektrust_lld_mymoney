@@ -1,6 +1,6 @@
 package io.hari.mymoney.entity.input;
 
-import io.hari.mymoney.constant.ActionType;
+import io.hari.mymoney.constant.UserOperationType;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,9 +11,9 @@ import lombok.ToString;
 @Getter
 @ToString
 public abstract class UserOperation {
-    private ActionType operation;
+    private UserOperationType operation;
 
-    public UserOperation(final ActionType operation) {
+    public UserOperation(final UserOperationType operation) {
         this.operation = operation;
     }
 }

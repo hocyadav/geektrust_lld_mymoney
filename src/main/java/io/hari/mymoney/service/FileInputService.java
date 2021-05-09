@@ -1,6 +1,5 @@
 package io.hari.mymoney.service;
 
-import io.hari.mymoney.constant.ActionType;
 import io.hari.mymoney.constant.Month;
 import io.hari.mymoney.entity.input.*;
 import lombok.NonNull;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 
-import static io.hari.mymoney.constant.ActionType.*;
+import static io.hari.mymoney.constant.UserOperationType.*;
 import static io.hari.mymoney.constant.ConstantUtil.INVALID_OPERATION;
 import static io.hari.mymoney.constant.ConstantUtil.SPACE_REGEX;
 
@@ -37,7 +36,7 @@ public class FileInputService {
 
         else if (operation.contains(balance.name())) {
             final String[] tokens = operation.split(" ");
-            final UserOperationBalance operationBALANCE = UserOperationBalance.builder().operation(ActionType.balance)
+            final UserOperationBalance operationBALANCE = UserOperationBalance.builder().operation(balance)
                     .month(Month.valueOf(tokens[1].toLowerCase()))
                     .build();
             userOperations.add(operationBALANCE);

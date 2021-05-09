@@ -3,15 +3,14 @@ package io.hari.mymoney.service;
 import io.hari.mymoney.entity.Portfolio;
 import io.hari.mymoney.entity.input.UserOperation;
 import io.hari.mymoney.entity.input.UserOperationBalance;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
-import static io.hari.mymoney.constant.ActionType.balance;
-import static io.hari.mymoney.constant.ActionType.rebalance;
+import static io.hari.mymoney.constant.UserOperationType.balance;
+import static io.hari.mymoney.constant.UserOperationType.rebalance;
 
 /**
  * @Author Hariom Yadav

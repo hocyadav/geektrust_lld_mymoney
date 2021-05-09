@@ -1,6 +1,6 @@
 package io.hari.mymoney.entity.input;
 
-import io.hari.mymoney.constant.ActionType;
+import io.hari.mymoney.constant.UserOperationType;
 import lombok.*;
 
 import java.math.BigInteger;
@@ -18,7 +18,7 @@ public class UserOperationAllocate extends UserOperation {
     private BigInteger gold;
 
     @Builder
-    public UserOperationAllocate(@NonNull ActionType operation,
+    public UserOperationAllocate(@NonNull UserOperationType operation,
                                  @NonNull BigInteger equity,
                                  @NonNull BigInteger dept,
                                  @NonNull BigInteger gold) {

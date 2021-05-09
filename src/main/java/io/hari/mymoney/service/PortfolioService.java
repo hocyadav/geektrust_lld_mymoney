@@ -1,7 +1,8 @@
 package io.hari.mymoney.service;
 
 import io.hari.mymoney.config.AppConfig;
-import io.hari.mymoney.constant.ActionType;
+import io.hari.mymoney.constant.PortfolioOperationType;
+import io.hari.mymoney.constant.UserOperationType;
 import io.hari.mymoney.constant.Month;
 import io.hari.mymoney.entity.Portfolio;
 import io.hari.mymoney.entity.PortfolioTransaction;
@@ -22,11 +23,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static io.hari.mymoney.constant.ActionType.allocate;
-import static io.hari.mymoney.constant.ActionType.sip;
+import static io.hari.mymoney.constant.UserOperationType.allocate;
+import static io.hari.mymoney.constant.UserOperationType.sip;
+import static io.hari.mymoney.constant.UserOperationType.change;
 import static io.hari.mymoney.constant.ConstantUtil.CANNOT_RE_BALANCE;
 import static io.hari.mymoney.constant.ConstantUtil.NO_BALANCE;
-import static io.hari.mymoney.constant.PortfolioOperation.*;
+import static io.hari.mymoney.constant.PortfolioOperationType.*;
 
 /**
  * @Author Hariom Yadav
@@ -87,7 +89,7 @@ public class PortfolioService {
                                                          @NonNull final PortfolioTransaction lastMonthTransaction) {
         final BigInteger total = lastMonthTransaction.getTotal();
         final PortfolioTransaction newTransaction = PortfolioTransaction.builder()
-                .operation(io.hari.mymoney.constant.PortfolioOperation.re_balance)
+                .operation(PortfolioOperationType.re_balance)
                 .assets(PortfolioTransaction.Asset.builder()
                         .equity(getAssetValue(portfolio.getInitialEquityPercent(), total))
                         .dept(getAssetValue(portfolio.getInitialDeptPercent(), total))
@@ -140,7 +142,7 @@ public class PortfolioService {
         final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(userOperations, sip));
 
         final List<UserOperation> userCHANGEOperations = userOperations.stream()
-                .filter(i -> i.getOperation().equals(ActionType.change)).collect(Collectors.toList());
+                .filter(i -> i.getOperation().equals(change)).collect(Collectors.toList());
         //create intial map and update start default value
 
         final Map<Month, Portfolio.PortfolioOperation> portfolioMap = new LinkedHashMap<>();
@@ -165,7 +167,7 @@ public class PortfolioService {
             //add previous as existing
             final PortfolioTransaction.Asset previousTransactionAsset = previousTransaction.get().getAssets();
             final PortfolioTransaction newTransaction = PortfolioTransaction.builder()
-                    .operation(io.hari.mymoney.constant.PortfolioOperation.existing)
+                    .operation(PortfolioOperationType.existing)
                     .build();
 
             newTransaction.setAssets(PortfolioTransaction.Asset.builder()
@@ -242,8 +244,8 @@ public class PortfolioService {
     }
 
     private UserOperation fetchOperation(@NonNull final List<UserOperation> userOperations,
-                                         @NonNull final ActionType actionType) {
-        final UserOperation userALLOCATEOperation = userOperations.stream().filter(i -> i.getOperation().equals(actionType))
+                                         @NonNull final UserOperationType operation) {
+        final UserOperation userALLOCATEOperation = userOperations.stream().filter(i -> i.getOperation().equals(operation))
                 .findFirst().orElseThrow(() -> new RuntimeException("operation not found"));
         return userALLOCATEOperation;
     }

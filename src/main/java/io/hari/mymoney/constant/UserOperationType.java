@@ -9,7 +9,7 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-public enum ActionType {
+public enum UserOperationType {
     allocate,
     sip,
     change,

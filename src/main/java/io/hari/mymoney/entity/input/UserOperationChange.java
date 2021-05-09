@@ -1,6 +1,6 @@
 package io.hari.mymoney.entity.input;
 
-import io.hari.mymoney.constant.ActionType;
+import io.hari.mymoney.constant.UserOperationType;
 import io.hari.mymoney.constant.Month;
 import lombok.*;
 
@@ -18,7 +18,7 @@ public class UserOperationChange extends UserOperation {
     private Month month;
 
     @Builder
-    public UserOperationChange(@NonNull ActionType operation,
+    public UserOperationChange(@NonNull UserOperationType operation,
                                @NonNull String equityPercent,
                                @NonNull String deptPercent,
                                @NonNull String goldPercent,

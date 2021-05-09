@@ -1,6 +1,6 @@
 package io.hari.mymoney.entity.input;
 
-import io.hari.mymoney.constant.ActionType;
+import io.hari.mymoney.constant.UserOperationType;
 import lombok.*;
 
 /**
@@ -13,7 +13,7 @@ import lombok.*;
 public class UserOperationReBalance extends UserOperation {
 
     @Builder
-    public UserOperationReBalance(@NonNull ActionType operation) {
+    public UserOperationReBalance(@NonNull UserOperationType operation) {
         super(operation);
     }
 }
