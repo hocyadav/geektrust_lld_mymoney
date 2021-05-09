@@ -1,6 +1,6 @@
 package io.hari.mymoney.entity;
 
-import io.hari.mymoney.constant.PortfolioOperation;
+import io.hari.mymoney.constant.PortfolioOperationType;
 import lombok.*;
 
 import java.math.BigInteger;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @Data
 @Builder
 public class PortfolioTransaction {
-    private PortfolioOperation operation;
+    private PortfolioOperationType operation;
 
     private Asset assets;
 
