@@ -8,6 +8,7 @@ import io.hari.mymoney.entity.input.UserOperation;
 import io.hari.mymoney.service.FileInputService;
 import io.hari.mymoney.service.PortfolioService;
 import io.hari.mymoney.service.UserService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -42,13 +43,13 @@ public class MyMoneyApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //todo: read file name from config
         final List<String> inputFileName = config.getInputFileName();
-        for (String filePath: inputFileName) {
+        for (final String filePath: inputFileName) {
             executeUserFileOperation(filePath);
             System.out.println();
         }
     }
 
-    private void executeUserFileOperation(String filePath) throws IOException {
+    private void executeUserFileOperation(@NonNull String filePath) throws IOException {
         List<UserOperation> userOperations = new LinkedList<>();
         Files.readAllLines(Paths.get(filePath)).forEach(line -> fileInputService.readInputFile(userOperations, line.toLowerCase()));
 

@@ -1,10 +1,7 @@
 package io.hari.mymoney.entity.input;
 
 import io.hari.mymoney.constant.ActionType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigInteger;
 
@@ -17,16 +14,13 @@ import java.math.BigInteger;
 @ToString(callSuper = true)
 public class UserOperationSIP extends UserOperation {
 
-    public UserOperationSIP(ActionType operation) {
-        super(operation);
-    }
-
     private BigInteger equity;
     private BigInteger dept;
     private BigInteger gold;
 
     @Builder
-    public UserOperationSIP(ActionType operation, BigInteger equity, BigInteger dept, BigInteger gold) {
+    public UserOperationSIP(@NonNull ActionType operation, @NonNull BigInteger equity, @NonNull BigInteger dept,
+                            @NonNull BigInteger gold) {
         super(operation);
         this.equity = equity;
         this.dept = dept;

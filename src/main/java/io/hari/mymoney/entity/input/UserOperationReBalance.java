@@ -1,10 +1,7 @@
 package io.hari.mymoney.entity.input;
 
 import io.hari.mymoney.constant.ActionType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Author Hariom Yadav
@@ -16,7 +13,7 @@ import lombok.ToString;
 public class UserOperationReBalance extends UserOperation {
 
     @Builder
-    public UserOperationReBalance(ActionType operation) {
+    public UserOperationReBalance(@NonNull ActionType operation) {
         super(operation);
     }
 }

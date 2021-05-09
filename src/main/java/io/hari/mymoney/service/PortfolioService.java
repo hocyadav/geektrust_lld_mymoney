@@ -83,9 +83,11 @@ public class PortfolioService {
         return result.get();
     }
 
-    private PortfolioTransaction newPortfolioTransaction(final Portfolio portfolio, final PortfolioTransaction lastMonthTransaction) {
+    private PortfolioTransaction newPortfolioTransaction(@NonNull final Portfolio portfolio,
+                                                         @NonNull final PortfolioTransaction lastMonthTransaction) {
         final BigInteger total = lastMonthTransaction.getTotal();
-        final PortfolioTransaction newTransaction = PortfolioTransaction.builder().operation(io.hari.mymoney.constant.PortfolioOperation.re_balance)
+        final PortfolioTransaction newTransaction = PortfolioTransaction.builder()
+                .operation(io.hari.mymoney.constant.PortfolioOperation.re_balance)
                 .assets(PortfolioTransaction.Asset.builder()
                         .equity(getAssetValue(portfolio.getInitialEquityPercent(), total))
                         .dept(getAssetValue(portfolio.getInitialDeptPercent(), total))
@@ -106,7 +108,8 @@ public class PortfolioService {
         return new BigInteger(resultInString);//123 in int
     }
 
-    public void updatePortfolioInitialPercentage(@NonNull final Portfolio portfolio, @NonNull final List<UserOperation> userOperations) {
+    public void updatePortfolioInitialPercentage(@NonNull final Portfolio portfolio,
+                                                 @NonNull final List<UserOperation> userOperations) {
         userOperations.stream().filter(Objects::nonNull).filter(i -> i.getOperation().equals(allocate)).findFirst()
                 .ifPresent(operationAbstract -> {
                     final UserOperationAllocate operationAllocate = UserOperationAllocate.class.cast(operationAbstract);
@@ -114,7 +117,8 @@ public class PortfolioService {
                 });
     }
 
-    public void updatePortfolioInitialPercentage(@NonNull final Portfolio portfolio, @NonNull final UserOperationAllocate operationAllocate) {
+    public void updatePortfolioInitialPercentage(@NonNull final Portfolio portfolio,
+                                                 @NonNull final UserOperationAllocate operationAllocate) {
         final BigInteger total = operationAllocate.getEquity()
                 .add(operationAllocate.getDept())
                 .add(operationAllocate.getGold());
@@ -130,7 +134,8 @@ public class PortfolioService {
         return multiply * Double.valueOf(100);
     }
 
-    public void executeUserCHANGEOperation(@NonNull final Portfolio portfolio, @NonNull final List<UserOperation> userOperations) {
+    public void executeUserCHANGEOperation(@NonNull final Portfolio portfolio,
+                                           @NonNull final List<UserOperation> userOperations) {
         final UserOperationAllocate operationAllocate = UserOperationAllocate.class.cast(fetchOperation(userOperations, allocate));
         final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(userOperations, sip));
 
@@ -157,8 +162,10 @@ public class PortfolioService {
             final UserOperationChange operationChange = UserOperationChange.class.cast(operation);
             //add previous as existing
             final PortfolioTransaction.Asset previousTransactionAsset = previousTransaction.get().getAssets();
-            final PortfolioTransaction newTransaction = PortfolioTransaction.builder().operation(io.hari.mymoney.constant.PortfolioOperation.existing)
+            final PortfolioTransaction newTransaction = PortfolioTransaction.builder()
+                    .operation(io.hari.mymoney.constant.PortfolioOperation.existing)
                     .build();
+
             newTransaction.setAssets(PortfolioTransaction.Asset.builder()
                     .equity(previousTransactionAsset.getEquity())
                     .dept(previousTransactionAsset.getDept())
@@ -195,7 +202,11 @@ public class PortfolioService {
         portfolio.setPortfolioOperations(portfolioMap);
     }
 
-    private void updateSIPOperation(UserOperationSIP operationSIP, Map<Month, Portfolio.PortfolioOperation> portfolioMap, AtomicReference<PortfolioTransaction> previousTransaction, UserOperationChange operationChange, PortfolioTransaction.Asset previousAsset) {
+    private void updateSIPOperation(@NonNull UserOperationSIP operationSIP,
+                                    final Map<Month, Portfolio.PortfolioOperation> portfolioMap,
+                                    final AtomicReference<PortfolioTransaction> previousTransaction,
+                                    @NonNull UserOperationChange operationChange,
+                                    @NonNull PortfolioTransaction.Asset previousAsset) {
         final BigInteger equityForSip = calculateEquityInSIPOperation(previousAsset.getEquity(), operationSIP.getEquity());
         final BigInteger deptForSip = calculateEquityInSIPOperation(previousAsset.getDept(), operationSIP.getDept());
         final BigInteger goldForSip = calculateEquityInSIPOperation(previousAsset.getGold(), operationSIP.getGold());
@@ -211,7 +222,8 @@ public class PortfolioService {
         previousTransaction.set(transaction);
     }
 
-    private BigInteger calculateEquityInSIPOperation(@NonNull final BigInteger previousValue, @NonNull final BigInteger sipValue) {
+    private BigInteger calculateEquityInSIPOperation(@NonNull final BigInteger previousValue,
+                                                     @NonNull final BigInteger sipValue) {
         return previousValue.add(sipValue);
     }
 
@@ -227,13 +239,15 @@ public class PortfolioService {
         return newTransaction;
     }
 
-    private UserOperation fetchOperation(@NonNull final List<UserOperation> abstracts, @NonNull final ActionType actionType) {
-        final UserOperation userALLOCATEOperation = abstracts.stream().filter(i -> i.getOperation().equals(actionType)).findFirst()
-                .orElseThrow(() -> new RuntimeException("operation not found"));
+    private UserOperation fetchOperation(@NonNull final List<UserOperation> userOperations,
+                                         @NonNull final ActionType actionType) {
+        final UserOperation userALLOCATEOperation = userOperations.stream().filter(i -> i.getOperation().equals(actionType))
+                .findFirst().orElseThrow(() -> new RuntimeException("operation not found"));
         return userALLOCATEOperation;
     }
 
-    public BigInteger calculatePercentageBetweenValues(@NonNull final BigInteger asset, @NonNull final Double assetPercentage) {
+    public BigInteger calculatePercentageBetweenValues(@NonNull final BigInteger asset,
+                                                       @NonNull final Double assetPercentage) {
         final BigDecimal percent = BigDecimal.valueOf(assetPercentage)
                         .divide(BigDecimal.valueOf(100));
 
