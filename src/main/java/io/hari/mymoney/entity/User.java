@@ -12,12 +12,10 @@ import java.util.List;
  * @Author Hariom Yadav
  * @create 5/8/2021
  */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class User {
     @NotNull
     String name;

@@ -9,11 +9,7 @@ import java.util.*;
  * @Author Hariom Yadav
  * @create 5/8/2021
  */
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
 public class Portfolio {
     private Double initialEquityPercent;
@@ -25,11 +21,9 @@ public class Portfolio {
     @Builder.Default
     private Map<Month, PortfolioOperation> portfolioOperations = new LinkedHashMap<>();
 
-    @Getter
-    @Setter
-    @ToString
     @NoArgsConstructor
     @AllArgsConstructor
+    @Data
     @Builder
     public static class PortfolioOperation {
 

@@ -10,11 +10,7 @@ import java.util.Optional;
  * @Author Hariom Yadav
  * @create 5/8/2021
  */
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
 public class PortfolioTransaction {
     private PortfolioOperation operation;
@@ -23,10 +19,7 @@ public class PortfolioTransaction {
 
     private BigInteger total;
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Data
     @Builder
     public static class Asset {
         BigInteger equity;
