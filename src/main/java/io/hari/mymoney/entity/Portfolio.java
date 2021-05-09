@@ -23,7 +23,7 @@ public class Portfolio {
     private Double initialGoldPercent;
 
     @Builder.Default
-    Map<Month, PortfolioOperation> portfolioOperations = new LinkedHashMap<>();
+    private Map<Month, PortfolioOperation> portfolioOperations = new LinkedHashMap<>();
 
     @Getter
     @Setter
@@ -34,6 +34,6 @@ public class Portfolio {
     public static class PortfolioOperation {
 
         @Builder.Default
-        List<PortfolioTransaction> portfolioTransactions = new LinkedList<>();
+        private List<PortfolioTransaction> portfolioTransactions = new LinkedList<>();
     }
 }

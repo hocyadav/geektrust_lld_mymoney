@@ -130,16 +130,16 @@ public class PortfolioService {
         return multiply * Double.valueOf(100);
     }
 
-    public void executeUserCHANGEOperation(@NonNull final Portfolio portfolio, @NonNull final List<UserOperation> abstracts) {
-        final UserOperationAllocate operationAllocate = UserOperationAllocate.class.cast(fetchOperation(abstracts, allocate));
-        final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(abstracts, sip));
+    public void executeUserCHANGEOperation(@NonNull final Portfolio portfolio, @NonNull final List<UserOperation> userOperations) {
+        final UserOperationAllocate operationAllocate = UserOperationAllocate.class.cast(fetchOperation(userOperations, allocate));
+        final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(userOperations, sip));
 
-        final List<UserOperation> userOperations = abstracts.stream().filter(i -> i.getOperation().equals(ActionType.change)).collect(Collectors.toList());
+        final List<UserOperation> userCHANGEOperations = userOperations.stream().filter(i -> i.getOperation().equals(ActionType.change)).collect(Collectors.toList());
         //create intial map and update start default value
 
         final Map<Month, Portfolio.PortfolioOperation> portfolioMap = new LinkedHashMap<>();
 
-        final UserOperation userCHANGEOperation = userOperations.get(0);
+        final UserOperation userCHANGEOperation = userCHANGEOperations.get(0);
         final UserOperationChange userOperationChange = UserOperationChange.class.cast(userCHANGEOperation);
 
         final PortfolioTransaction firstTransaction = newPortfolioTransaction(operationAllocate);
@@ -153,7 +153,7 @@ public class PortfolioService {
         UserOperationAllocate operationAllocate_previous = operationAllocate;
         AtomicReference<PortfolioTransaction> previousTransaction = new AtomicReference<>(firstTransaction);
 
-        userOperations.stream().forEach(operation -> {
+        userCHANGEOperations.stream().forEach(operation -> {
             final UserOperationChange operationChange = UserOperationChange.class.cast(operation);
             //add previous as existing
             final PortfolioTransaction.Asset previousTransactionAsset = previousTransaction.get().getAssets();
@@ -171,7 +171,7 @@ public class PortfolioService {
 
 
             PortfolioTransaction.Asset previousAsset = previousTransaction.get().getAssets();
-            if (atomicInteger.get() >= 1 && operationSIP != null) {
+            if (atomicInteger.get() >= 1 && Objects.nonNull(operationSIP)) {
                 updateSIPOperation(operationSIP, portfolioMap, previousTransaction, operationChange, previousAsset);
             }
 
@@ -179,9 +179,9 @@ public class PortfolioService {
                     PortfolioTransaction.builder().operation(after_market_change).build();
             previousAsset = previousTransaction.get().getAssets();
 
-            final BigInteger e = calculatePercentageBetween2Values_forAllocation(previousAsset.getEquity(), operationChange.getEquityPercent());
-            final BigInteger d = calculatePercentageBetween2Values_forAllocation(previousAsset.getDept(), operationChange.getDeptPercent());
-            final BigInteger g = calculatePercentageBetween2Values_forAllocation(previousAsset.getGold(), operationChange.getGoldPercent());
+            final BigInteger e = calculatePercentageBetweenValues(previousAsset.getEquity(), operationChange.getEquityPercent());
+            final BigInteger d = calculatePercentageBetweenValues(previousAsset.getDept(), operationChange.getDeptPercent());
+            final BigInteger g = calculatePercentageBetweenValues(previousAsset.getGold(), operationChange.getGoldPercent());
 
             portfolioTransaction.setAssets(PortfolioTransaction.Asset.builder().equity(e).dept(d).gold(g).build());
             portfolioTransaction.updateTotal();
@@ -196,9 +196,9 @@ public class PortfolioService {
     }
 
     private void updateSIPOperation(UserOperationSIP operationSIP, Map<Month, Portfolio.PortfolioOperation> portfolioMap, AtomicReference<PortfolioTransaction> previousTransaction, UserOperationChange operationChange, PortfolioTransaction.Asset previousAsset) {
-        final BigInteger equityForSip = calculateEquityForSip(previousAsset.getEquity(), operationSIP.getEquity());
-        final BigInteger deptForSip = calculateEquityForSip(previousAsset.getDept(), operationSIP.getDept());
-        final BigInteger goldForSip = calculateEquityForSip(previousAsset.getGold(), operationSIP.getGold());
+        final BigInteger equityForSip = calculateEquityInSIPOperation(previousAsset.getEquity(), operationSIP.getEquity());
+        final BigInteger deptForSip = calculateEquityInSIPOperation(previousAsset.getDept(), operationSIP.getDept());
+        final BigInteger goldForSip = calculateEquityInSIPOperation(previousAsset.getGold(), operationSIP.getGold());
 
         final PortfolioTransaction transaction = PortfolioTransaction.builder().operation(after_sip)
                 .build();
@@ -211,37 +211,37 @@ public class PortfolioService {
         previousTransaction.set(transaction);
     }
 
-    private BigInteger calculateEquityForSip(@NonNull final BigInteger previousValue, @NonNull final BigInteger sipValue) {
+    private BigInteger calculateEquityInSIPOperation(@NonNull final BigInteger previousValue, @NonNull final BigInteger sipValue) {
         return previousValue.add(sipValue);
     }
 
     private PortfolioTransaction newPortfolioTransaction(@NonNull final UserOperationAllocate allocate) {
-        final PortfolioTransaction build1 = PortfolioTransaction.builder().operation(allocation)
+        final PortfolioTransaction newTransaction = PortfolioTransaction.builder().operation(allocation)
                 .assets(PortfolioTransaction.Asset.builder()
                         .equity(allocate.getEquity())
                         .dept(allocate.getDept())
                         .gold(allocate.getGold())
                         .build())
                 .build();
-        build1.updateTotal();
-        return build1;
+        newTransaction.updateTotal();
+        return newTransaction;
     }
 
     private UserOperation fetchOperation(@NonNull final List<UserOperation> abstracts, @NonNull final ActionType actionType) {
-        final UserOperation allocate = abstracts.stream().filter(i -> i.getOperation().equals(actionType)).findFirst()
+        final UserOperation userALLOCATEOperation = abstracts.stream().filter(i -> i.getOperation().equals(actionType)).findFirst()
                 .orElseThrow(() -> new RuntimeException("operation not found"));
-        return allocate;
+        return userALLOCATEOperation;
     }
 
-    public BigInteger calculatePercentageBetween2Values_forAllocation(@NonNull final BigInteger asset, @NonNull final Double assetPercentage) {
-        final BigDecimal hundred = BigDecimal.valueOf(100);
-        final BigDecimal percent = BigDecimal.valueOf(assetPercentage).divide(hundred);
+    public BigInteger calculatePercentageBetweenValues(@NonNull final BigInteger asset, @NonNull final Double assetPercentage) {
+        final BigDecimal percent = BigDecimal.valueOf(assetPercentage)
+                        .divide(BigDecimal.valueOf(100));
 
-        final BigDecimal deAsset = new BigDecimal(asset);
-        final BigDecimal multiply = deAsset.multiply(percent);
-        final BigDecimal add = deAsset.add(multiply);
-        final BigDecimal bigDecimal = add.setScale(0, RoundingMode.FLOOR);
-        final BigInteger bigInteger = new BigInteger(String.valueOf(bigDecimal));
-        return bigInteger;
+        final BigDecimal assetInDecimal = new BigDecimal(asset);
+        final BigDecimal multiply = assetInDecimal.multiply(percent);
+        final BigDecimal result = assetInDecimal.add(multiply);
+
+        final BigDecimal resultWithFloor = result.setScale(0, RoundingMode.FLOOR);
+        return new BigInteger(String.valueOf(resultWithFloor));
     }
 }
