@@ -13,13 +13,14 @@ import java.math.BigInteger;
 @Setter
 @ToString(callSuper = true)
 public class UserOperationSIP extends UserOperation {
-
     private BigInteger equity;
     private BigInteger dept;
     private BigInteger gold;
 
     @Builder
-    public UserOperationSIP(@NonNull ActionType operation, @NonNull BigInteger equity, @NonNull BigInteger dept,
+    public UserOperationSIP(@NonNull ActionType operation,
+                            @NonNull BigInteger equity,
+                            @NonNull BigInteger dept,
                             @NonNull BigInteger gold) {
         super(operation);
         this.equity = equity;

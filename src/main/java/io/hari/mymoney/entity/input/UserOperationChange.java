@@ -12,15 +12,17 @@ import lombok.*;
 @Setter
 @ToString(callSuper = true)
 public class UserOperationChange extends UserOperation {
-
     private Double equityPercent;
     private Double deptPercent;
     private Double goldPercent;
     private Month month;
 
     @Builder
-    public UserOperationChange(@NonNull ActionType operation, @NonNull String equityPercent, @NonNull String deptPercent,
-                               @NonNull String goldPercent, @NonNull String month) {
+    public UserOperationChange(@NonNull ActionType operation,
+                               @NonNull String equityPercent,
+                               @NonNull String deptPercent,
+                               @NonNull String goldPercent,
+                               @NonNull String month) {
         super(operation);
         this.equityPercent = Double.valueOf(equityPercent.replace("%", ""));
         this.deptPercent = Double.valueOf(deptPercent.replace("%", ""));

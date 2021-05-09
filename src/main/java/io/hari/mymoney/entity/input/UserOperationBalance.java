@@ -12,7 +12,6 @@ import lombok.*;
 @Setter
 @ToString(callSuper = true)
 public class UserOperationBalance extends UserOperation {
-
     private Month month;
 
     @Builder
