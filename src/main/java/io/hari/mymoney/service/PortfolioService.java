@@ -139,7 +139,8 @@ public class PortfolioService {
         final UserOperationAllocate operationAllocate = UserOperationAllocate.class.cast(fetchOperation(userOperations, allocate));
         final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(userOperations, sip));
 
-        final List<UserOperation> userCHANGEOperations = userOperations.stream().filter(i -> i.getOperation().equals(ActionType.change)).collect(Collectors.toList());
+        final List<UserOperation> userCHANGEOperations = userOperations.stream()
+                .filter(i -> i.getOperation().equals(ActionType.change)).collect(Collectors.toList());
         //create intial map and update start default value
 
         final Map<Month, Portfolio.PortfolioOperation> portfolioMap = new LinkedHashMap<>();
@@ -151,7 +152,8 @@ public class PortfolioService {
         List<PortfolioTransaction> transactions = new LinkedList<>();
         transactions.add(firstTransaction);
 
-        final Portfolio.PortfolioOperation build = Portfolio.PortfolioOperation.builder().portfolioTransactions(transactions).build();
+        final Portfolio.PortfolioOperation build =
+                Portfolio.PortfolioOperation.builder().portfolioTransactions(transactions).build();
         portfolioMap.put(userOperationChange.getMonth(), build);
 
         AtomicInteger atomicInteger = new AtomicInteger(0);
