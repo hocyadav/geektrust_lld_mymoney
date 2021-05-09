@@ -12,13 +12,13 @@ import java.math.BigInteger;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class UserOperationAllocate extends UserOperation {
+public class UserOperationALLOCATE extends UserOperation {
     private BigInteger equity;
     private BigInteger dept;
     private BigInteger gold;
 
     @Builder
-    public UserOperationAllocate(@NonNull UserOperationType operation,
+    public UserOperationALLOCATE(@NonNull UserOperationType operation,
                                  @NonNull BigInteger equity,
                                  @NonNull BigInteger dept,
                                  @NonNull BigInteger gold) {

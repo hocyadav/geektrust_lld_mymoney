@@ -1,7 +1,6 @@
 package io.hari.mymoney.entity.input;
 
 import io.hari.mymoney.constant.UserOperationType;
-import io.hari.mymoney.constant.Month;
 import lombok.*;
 
 /**
@@ -11,12 +10,10 @@ import lombok.*;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class UserOperationBalance extends UserOperation {
-    private Month month;
+public class UserOperationREBALANCE extends UserOperation {
 
     @Builder
-    public UserOperationBalance(@NonNull UserOperationType operation, @NonNull Month month) {
+    public UserOperationREBALANCE(@NonNull UserOperationType operation) {
         super(operation);
-        this.month = month;
     }
 }

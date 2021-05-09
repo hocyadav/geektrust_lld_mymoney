@@ -32,21 +32,21 @@ public class FileInputService {
             userOperations.add(getCHANGEOperation(operation));
 
         else if (operation.contains(rebalance.name()))
-            userOperations.add(UserOperationReBalance.builder().operation(rebalance).build());
+            userOperations.add(UserOperationREBALANCE.builder().operation(rebalance).build());
 
         else if (operation.contains(balance.name())) {
             final String[] tokens = operation.split(" ");
-            final UserOperationBalance operationBALANCE = UserOperationBalance.builder().operation(balance)
+            final UserOperationBALANCE operationBALANCE = UserOperationBALANCE.builder().operation(balance)
                     .month(Month.valueOf(tokens[1].toLowerCase()))
                     .build();
             userOperations.add(operationBALANCE);
         } else throw new RuntimeException("invalid operation");
     }
 
-    public UserOperationChange getCHANGEOperation(@NonNull final String operation) {
+    public UserOperationCHANGE getCHANGEOperation(@NonNull final String operation) {
         validateUserOperation(operation, 5);
         final String[] tokens = operation.split(" ");
-        final UserOperationChange userOperation = UserOperationChange.builder()
+        final UserOperationCHANGE userOperation = UserOperationCHANGE.builder()
                 .operation(change)
                 .equityPercent(tokens[1])
                 .deptPercent(tokens[2])
@@ -57,10 +57,10 @@ public class FileInputService {
         return userOperation;
     }
 
-    public UserOperationAllocate getALLOCATEOperation(@NonNull final String operation) {
+    public UserOperationALLOCATE getALLOCATEOperation(@NonNull final String operation) {
         validateUserOperation(operation, 4);
         final String[] tokens = operation.split(" ");
-        final UserOperationAllocate userOperation = UserOperationAllocate.builder()
+        final UserOperationALLOCATE userOperation = UserOperationALLOCATE.builder()
                 .operation(allocate)
                 .equity(new BigInteger(tokens[1]))
                 .dept(new BigInteger(tokens[2]))

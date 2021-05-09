@@ -11,14 +11,14 @@ import lombok.*;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class UserOperationChange extends UserOperation {
+public class UserOperationCHANGE extends UserOperation {
     private Double equityPercent;
     private Double deptPercent;
     private Double goldPercent;
     private Month month;
 
     @Builder
-    public UserOperationChange(@NonNull UserOperationType operation,
+    public UserOperationCHANGE(@NonNull UserOperationType operation,
                                @NonNull String equityPercent,
                                @NonNull String deptPercent,
                                @NonNull String goldPercent,

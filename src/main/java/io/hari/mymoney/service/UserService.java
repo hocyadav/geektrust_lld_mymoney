@@ -2,7 +2,7 @@ package io.hari.mymoney.service;
 
 import io.hari.mymoney.entity.Portfolio;
 import io.hari.mymoney.entity.input.UserOperation;
-import io.hari.mymoney.entity.input.UserOperationBalance;
+import io.hari.mymoney.entity.input.UserOperationBALANCE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class UserService {
                 .filter(i -> i.getOperation().equals(balance) || i.getOperation().equals(rebalance))
                 .forEach(userOperation -> {
                     if (userOperation.getOperation().equals(balance)) {
-                        final UserOperationBalance userOperationBalance = UserOperationBalance.class.cast(userOperation);
+                        final UserOperationBALANCE userOperationBalance = UserOperationBALANCE.class.cast(userOperation);
                         System.out.println(
                                 portfolioService.getBALANCEOperation(portfolio, userOperationBalance.getMonth())
                         );
