@@ -26,7 +26,7 @@ import static io.hari.mymoney.constant.ConstantUtil.CANNOT_RE_BALANCE;
 import static io.hari.mymoney.constant.ConstantUtil.NO_BALANCE;
 
 /**
- * @Author hayadav
+ * @Author Hariom Yadav
  * @create 5/8/2021
  */
 @Service

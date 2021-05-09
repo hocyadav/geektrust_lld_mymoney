@@ -13,7 +13,7 @@ import static io.hari.mymoney.constant.ActionType.balance;
 import static io.hari.mymoney.constant.ActionType.rebalance;
 
 /**
- * @Author hayadav
+ * @Author Hariom Yadav
  * @create 5/8/2021
  */
 @Service

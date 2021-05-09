@@ -1,7 +1,7 @@
 package io.hari.mymoney.constant;
 
 /**
- * @Author hayadav
+ * @Author Hariom Yadav
  * @create 5/8/2021
  */
 public class ConstantUtil {
