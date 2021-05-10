@@ -51,10 +51,12 @@ public class PortfolioService {
         final Map<Month, Portfolio.PortfolioOperation> portfolioOperations = portfolio.getPortfolioOperations();
         final List<PortfolioTransaction> fetchMonthTransactions = Optional.ofNullable(portfolioOperations.get(month))
                 .orElseGet(() -> new Portfolio.PortfolioOperation()).getPortfolioTransactions();
-        final Optional<PortfolioTransaction> transaction = fetchMonthTransactions.stream().filter(Objects::nonNull)
-                .filter(i -> i.getOperation().equals(after_market_change))
+
+        final Optional<PortfolioTransaction> transactionOptional = fetchMonthTransactions.stream()
+                .filter(Objects::nonNull).filter(PortfolioTransaction::afterMarketChange)
                 .collect(Collectors.toList()).stream().findFirst();
-        transaction.ifPresent(afterMarketChangeTxn -> result.set(afterMarketChangeTxn.getAssets().toString()));
+
+        transactionOptional.ifPresent(afterMarketChangeTxn -> result.set(afterMarketChangeTxn.getAssets().toString()));
         return result.get();
     }
 
@@ -75,7 +77,7 @@ public class PortfolioService {
                 .orElseGet(() -> new LinkedList<>());
 
         final Optional<PortfolioTransaction> lastMonthTransaction = portfolioTransactions.stream()
-                .filter(i -> i.getOperation().equals(after_market_change)).findFirst();
+                .filter(PortfolioTransaction::afterMarketChange).findFirst();
 
         lastMonthTransaction.ifPresent(afterMarketChangeTxn -> {
             final PortfolioTransaction newTransaction = newPortfolioTransaction(portfolio, afterMarketChangeTxn);
@@ -112,7 +114,7 @@ public class PortfolioService {
 
     public void updatePortfolioInitialPercentage(@NonNull final Portfolio portfolio,
                                                  @NonNull final List<UserOperation> userOperations) {
-        userOperations.stream().filter(Objects::nonNull).filter(i -> i.getOperation().equals(allocate)).findFirst()
+        userOperations.stream().filter(Objects::nonNull).filter(UserOperation::allocate).findFirst()
                 .ifPresent(operationAbstract -> {
                     final UserOperationALLOCATE operationAllocate = UserOperationALLOCATE.class.cast(operationAbstract);
                     updatePortfolioInitialPercentage(portfolio, operationAllocate);
@@ -142,7 +144,7 @@ public class PortfolioService {
         final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(userOperations, sip));
 
         final List<UserOperation> userCHANGEOperations = userOperations.stream()
-                .filter(i -> i.getOperation().equals(change)).collect(Collectors.toList());
+                .filter(UserOperation::change).collect(Collectors.toList());
         //create intial map and update start default value
 
         final Map<Month, Portfolio.PortfolioOperation> portfolioMap = new LinkedHashMap<>();
@@ -245,8 +247,9 @@ public class PortfolioService {
 
     private UserOperation fetchOperation(@NonNull final List<UserOperation> userOperations,
                                          @NonNull final UserOperationType operation) {
-        final UserOperation userALLOCATEOperation = userOperations.stream().filter(i -> i.getOperation().equals(operation))
-                .findFirst().orElseThrow(() -> new RuntimeException("operation not found"));
+        final UserOperation userALLOCATEOperation =
+                userOperations.stream().filter(Objects::nonNull).filter(i -> i.getOperation().equals(operation))
+                        .findFirst().orElseThrow(() -> new RuntimeException("operation not found"));
         return userALLOCATEOperation;
     }
 
@@ -262,4 +265,5 @@ public class PortfolioService {
         final BigDecimal resultWithFloor = result.setScale(0, RoundingMode.FLOOR);
         return new BigInteger(String.valueOf(resultWithFloor));
     }
+
 }

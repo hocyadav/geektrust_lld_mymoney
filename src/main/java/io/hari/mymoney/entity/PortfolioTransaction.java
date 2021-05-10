@@ -6,6 +6,8 @@ import lombok.*;
 import java.math.BigInteger;
 import java.util.Optional;
 
+import static io.hari.mymoney.constant.PortfolioOperationType.after_market_change;
+
 /**
  * @Author Hariom Yadav
  * @create 5/8/2021
@@ -40,5 +42,10 @@ public class PortfolioTransaction {
         final BigInteger gold = Optional.ofNullable(assets.gold).orElseGet(() -> BigInteger.ZERO);
         this.total = equity.add(dept).add(gold);
         return total;
+    }
+
+
+    public static boolean afterMarketChange(PortfolioTransaction i) {
+        return i.getOperation().equals(after_market_change);
     }
 }

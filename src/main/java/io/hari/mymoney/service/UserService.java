@@ -24,7 +24,7 @@ public class UserService {
     public void executeUserBALANCE_REBALANCEOperations(final Portfolio portfolio,
                                                        final List<UserOperation> userOperations) {
         userOperations.stream().filter(Objects::nonNull)
-                .filter(i -> i.getOperation().equals(balance) || i.getOperation().equals(rebalance))
+                .filter(UserOperation::equalToBalanceORReBalance)
                 .forEach(userOperation -> {
                     if (userOperation.getOperation().equals(balance)) {
                         final UserOperationBALANCE userOperationBalance = UserOperationBALANCE.class.cast(userOperation);
