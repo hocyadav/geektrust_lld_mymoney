@@ -21,8 +21,8 @@ import static io.hari.mymoney.constant.UserOperationType.rebalance;
 public class UserService {
     private final PortfolioService portfolioService;
 
-    public void executeUserBALANCE_REBALANCEOperations(final List<UserOperation> userOperations,
-                                                       final Portfolio portfolio) {
+    public void executeUserBALANCE_REBALANCEOperations(final Portfolio portfolio,
+                                                       final List<UserOperation> userOperations) {
         userOperations.stream().filter(Objects::nonNull)
                 .filter(i -> i.getOperation().equals(balance) || i.getOperation().equals(rebalance))
                 .forEach(userOperation -> {

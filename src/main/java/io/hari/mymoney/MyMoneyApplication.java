@@ -66,7 +66,7 @@ public class MyMoneyApplication implements CommandLineRunner {
         portfolioService.executeUserCHANGEOperation(portfolio, userOperations);
 
         //todo: execute user operations
-        userService.executeUserBALANCE_REBALANCEOperations(userOperations, portfolio);
+        userService.executeUserBALANCE_REBALANCEOperations(portfolio, userOperations);
 
         //todo: assign portfolio to user
         user.getUserPortfolios().add(portfolio);
