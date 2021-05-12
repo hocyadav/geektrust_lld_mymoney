@@ -20,15 +20,15 @@ public abstract class UserOperation {
         this.operation = operation;
     }
 
-    public static boolean allocate(UserOperation i) {
+    public static boolean isALLOCATE(UserOperation i) {
         return i.getOperation().equals(allocate);
     }
 
-    public static boolean change(UserOperation i) {
+    public static boolean isCHANGE(UserOperation i) {
         return i.getOperation().equals(change);
     }
 
-    public static boolean equalToBalanceORReBalance(UserOperation i) {
+    public static boolean isBALANCE_or_REBALANCE(UserOperation i) {
         return i.getOperation().equals(balance) ||
                 i.getOperation().equals(rebalance);
     }

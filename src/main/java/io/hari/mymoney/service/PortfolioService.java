@@ -1,7 +1,6 @@
 package io.hari.mymoney.service;
 
 import io.hari.mymoney.config.AppConfig;
-import io.hari.mymoney.constant.PortfolioOperationType;
 import io.hari.mymoney.constant.UserOperationType;
 import io.hari.mymoney.constant.Month;
 import io.hari.mymoney.entity.Portfolio;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 
 import static io.hari.mymoney.constant.UserOperationType.allocate;
 import static io.hari.mymoney.constant.UserOperationType.sip;
-import static io.hari.mymoney.constant.UserOperationType.change;
 import static io.hari.mymoney.constant.ConstantUtil.CANNOT_RE_BALANCE;
 import static io.hari.mymoney.constant.ConstantUtil.NO_BALANCE;
 import static io.hari.mymoney.constant.PortfolioOperationType.*;
@@ -91,7 +89,7 @@ public class PortfolioService {
                                                          @NonNull final PortfolioTransaction lastMonthTransaction) {
         final BigInteger total = lastMonthTransaction.getTotal();
         final PortfolioTransaction newTransaction = PortfolioTransaction.builder()
-                .operation(PortfolioOperationType.re_balance)
+                .operation(RE_BALANCE)
                 .assets(PortfolioTransaction.Asset.builder()
                         .equity(getAssetValue(portfolio.getInitialEquityPercent(), total))
                         .dept(getAssetValue(portfolio.getInitialDeptPercent(), total))
@@ -114,7 +112,7 @@ public class PortfolioService {
 
     public void updatePortfolioInitialPercentage(@NonNull final Portfolio portfolio,
                                                  @NonNull final List<UserOperation> userOperations) {
-        userOperations.stream().filter(Objects::nonNull).filter(UserOperation::allocate).findFirst()
+        userOperations.stream().filter(Objects::nonNull).filter(UserOperation::isALLOCATE).findFirst()
                 .ifPresent(operationAbstract -> {
                     final UserOperationALLOCATE operationAllocate = UserOperationALLOCATE.class.cast(operationAbstract);
                     updatePortfolioInitialPercentage(portfolio, operationAllocate);
@@ -144,7 +142,7 @@ public class PortfolioService {
         final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(userOperations, sip));
 
         final List<UserOperation> userCHANGEOperations = userOperations.stream()
-                .filter(UserOperation::change).collect(Collectors.toList());
+                .filter(UserOperation::isCHANGE).collect(Collectors.toList());
         //create intial map and update start default value
 
         final Map<Month, Portfolio.PortfolioOperation> portfolioMap = new LinkedHashMap<>();
@@ -169,7 +167,7 @@ public class PortfolioService {
             //add previous as existing
             final PortfolioTransaction.Asset previousTransactionAsset = previousTransaction.get().getAssets();
             final PortfolioTransaction newTransaction = PortfolioTransaction.builder()
-                    .operation(PortfolioOperationType.existing)
+                    .operation(EXISTING)
                     .build();
 
             newTransaction.setAssets(PortfolioTransaction.Asset.builder()
@@ -189,7 +187,7 @@ public class PortfolioService {
             }
 
             final PortfolioTransaction portfolioTransaction =
-                    PortfolioTransaction.builder().operation(after_market_change).build();
+                    PortfolioTransaction.builder().operation(AFTER_MARKET_CHANGE).build();
             previousAsset = previousTransaction.get().getAssets();
 
             final BigInteger e = calculatePercentageBetweenValues(previousAsset.getEquity(), operationChange.getEquityPercent());
@@ -217,7 +215,7 @@ public class PortfolioService {
         final BigInteger deptForSip = calculateEquityInSIPOperation(previousAsset.getDept(), operationSIP.getDept());
         final BigInteger goldForSip = calculateEquityInSIPOperation(previousAsset.getGold(), operationSIP.getGold());
 
-        final PortfolioTransaction transaction = PortfolioTransaction.builder().operation(after_sip)
+        final PortfolioTransaction transaction = PortfolioTransaction.builder().operation(AFTER_SIP)
                 .build();
         transaction.setAssets(PortfolioTransaction.Asset.builder()
                 .equity(equityForSip).dept(deptForSip).gold(goldForSip).build());
@@ -234,7 +232,7 @@ public class PortfolioService {
     }
 
     private PortfolioTransaction newPortfolioTransaction(@NonNull final UserOperationALLOCATE allocate) {
-        final PortfolioTransaction newTransaction = PortfolioTransaction.builder().operation(allocation)
+        final PortfolioTransaction newTransaction = PortfolioTransaction.builder().operation(ALLOCATION)
                 .assets(PortfolioTransaction.Asset.builder()
                         .equity(allocate.getEquity())
                         .dept(allocate.getDept())

@@ -6,7 +6,7 @@ import lombok.*;
 import java.math.BigInteger;
 import java.util.Optional;
 
-import static io.hari.mymoney.constant.PortfolioOperationType.after_market_change;
+import static io.hari.mymoney.constant.PortfolioOperationType.AFTER_MARKET_CHANGE;
 
 /**
  * @Author Hariom Yadav
@@ -16,18 +16,14 @@ import static io.hari.mymoney.constant.PortfolioOperationType.after_market_chang
 @Builder
 public class PortfolioTransaction {
     private PortfolioOperationType operation;
-
     private Asset assets;
-
     private BigInteger total;
 
     @Data
     @Builder
     public static class Asset {
         BigInteger equity;
-
         BigInteger dept;
-
         BigInteger gold;
 
         @Override
@@ -37,15 +33,20 @@ public class PortfolioTransaction {
     }
 
     public BigInteger updateTotal() {
-        final BigInteger equity = Optional.ofNullable(assets.equity).orElseGet(() -> BigInteger.ZERO);
-        final BigInteger dept = Optional.ofNullable(assets.dept).orElseGet(() -> BigInteger.ZERO);
-        final BigInteger gold = Optional.ofNullable(assets.gold).orElseGet(() -> BigInteger.ZERO);
-        this.total = equity.add(dept).add(gold);
+        final BigInteger equityValue = Optional.ofNullable(assets.getEquity()).orElseGet(() -> BigInteger.ZERO);
+        final BigInteger deptValue = Optional.ofNullable(assets.getDept()).orElseGet(() -> BigInteger.ZERO);
+        final BigInteger goldValue = Optional.ofNullable(assets.getGold()).orElseGet(() -> BigInteger.ZERO);
+        this.total = equityValue
+                .add(deptValue)
+                .add(goldValue);
+//        this.total = Optional.ofNullable(assets.getEquity()).orElseGet(() -> BigInteger.ZERO)
+//                .add(Optional.ofNullable(assets.getDept()).orElseGet(() -> BigInteger.ZERO))
+//                .add(Optional.ofNullable(assets.getGold()).orElseGet(() -> BigInteger.ZERO));
         return total;
     }
 
 
     public static boolean afterMarketChange(PortfolioTransaction i) {
-        return i.getOperation().equals(after_market_change);
+        return i.getOperation().equals(AFTER_MARKET_CHANGE);
     }
 }

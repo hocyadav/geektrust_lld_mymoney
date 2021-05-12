@@ -40,7 +40,7 @@ public class FileInputService {
                     .month(Month.valueOf(tokens[1].toLowerCase()))
                     .build();
             userOperations.add(operationBALANCE);
-        } else throw new RuntimeException("invalid operation");
+        } else throw new RuntimeException(INVALID_OPERATION);
     }
 
     public UserOperationCHANGE getCHANGEOperation(@NonNull final String operation) {

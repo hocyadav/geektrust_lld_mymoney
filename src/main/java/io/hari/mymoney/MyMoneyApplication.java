@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import static io.hari.mymoney.constant.UserType.investor;
+import static io.hari.mymoney.constant.UserType.INVESTOR;
 
 /**
  * @Author Hariom Yadav
@@ -58,7 +58,7 @@ public class MyMoneyApplication implements CommandLineRunner {
         userOperations.forEach(i -> log.info("user input operation : {}",i));
 
         //todo: create user
-        final User user = User.builder().name("hariom yadav").userType(investor).build();
+        final User user = User.builder().name("hariom yadav").userType(INVESTOR).build();
 
         //todo: create portfolio
         final Portfolio portfolio = Portfolio.builder().build();

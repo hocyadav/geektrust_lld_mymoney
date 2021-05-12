@@ -5,6 +5,6 @@ package io.hari.mymoney.constant;
  * @create 5/8/2021
  */
 public enum UserType {
-    investor,
-    admin;
+    INVESTOR,
+    ADMIN;
 }

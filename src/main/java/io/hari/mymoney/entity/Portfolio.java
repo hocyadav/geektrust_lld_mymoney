@@ -13,9 +13,7 @@ import java.util.*;
 @Builder
 public class Portfolio {
     private Double initialEquityPercent;
-
     private Double initialDeptPercent;
-
     private Double initialGoldPercent;
 
     @Builder.Default
@@ -26,7 +24,6 @@ public class Portfolio {
     @Data
     @Builder
     public static class PortfolioOperation {
-
         @Builder.Default
         private List<PortfolioTransaction> portfolioTransactions = new LinkedList<>();
     }

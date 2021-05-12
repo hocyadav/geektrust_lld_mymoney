@@ -5,9 +5,9 @@ package io.hari.mymoney.constant;
  * @create 5/8/2021
  */
 public enum PortfolioOperationType {
-    allocation,
-    existing,
-    after_market_change,
-    after_sip,
-    re_balance;
+    ALLOCATION,
+    EXISTING,
+    AFTER_MARKET_CHANGE,
+    AFTER_SIP,
+    RE_BALANCE;
 }
