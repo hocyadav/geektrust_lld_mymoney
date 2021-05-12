@@ -1,10 +1,10 @@
 package io.hari.mymoney;
 
-import io.hari.mymoney.config.AppConfig;
+import io.hari.mymoney.config.ApplicationConfig;
 import io.hari.mymoney.entity.Portfolio;
 import io.hari.mymoney.entity.User;
 import io.hari.mymoney.entity.input.UserOperation;
-import io.hari.mymoney.service.FileInputService;
+import io.hari.mymoney.service.FileOperationService;
 import io.hari.mymoney.service.PortfolioService;
 import io.hari.mymoney.service.UserService;
 import lombok.NonNull;
@@ -32,9 +32,9 @@ import static io.hari.mymoney.constant.UserType.INVESTOR;
 @Slf4j
 public class MyMoneyApplication implements CommandLineRunner {
 	private final PortfolioService portfolioService;
-    private final FileInputService fileInputService;
+    private final FileOperationService fileOperationService;
     private final UserService userService;
-    private final AppConfig config;
+    private final ApplicationConfig config;
 
     public static void main(String[] args) {
         SpringApplication.run(MyMoneyApplication.class, args);
@@ -52,7 +52,8 @@ public class MyMoneyApplication implements CommandLineRunner {
 
     private void executeUserFileOperation(@NonNull String filePath) throws IOException {
         List<UserOperation> userOperations = new LinkedList<>();
-        Files.readAllLines(Paths.get(filePath)).forEach(line -> fileInputService.readInputFile(userOperations, line.toLowerCase()));
+        Files.readAllLines(Paths.get(filePath))
+                .forEach(line -> fileOperationService.readInputFile(userOperations, line.toLowerCase()));
 
         //todo : print user operations
         userOperations.forEach(i -> log.info("user input operation : {}",i));

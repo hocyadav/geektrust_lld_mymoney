@@ -19,7 +19,7 @@ import static io.hari.mymoney.constant.ConstantUtil.SPACE_REGEX;
  */
 @Service
 @Slf4j
-public class FileInputService {
+public class FileOperationService {
 
     public void readInputFile(List<UserOperation> userOperations, String operation) {
         if (operation.contains(allocate.name()))

@@ -1,6 +1,6 @@
 package io.hari.mymoney.service;
 
-import io.hari.mymoney.config.AppConfig;
+import io.hari.mymoney.config.ApplicationConfig;
 import io.hari.mymoney.constant.UserOperationType;
 import io.hari.mymoney.constant.Month;
 import io.hari.mymoney.entity.Portfolio;
@@ -36,7 +36,7 @@ import static io.hari.mymoney.constant.PortfolioOperationType.*;
 @Slf4j
 @RequiredArgsConstructor
 public class PortfolioService {
-    private final AppConfig config;
+    private final ApplicationConfig config;
 
     /**
      * Approach:
@@ -69,7 +69,7 @@ public class PortfolioService {
 
         final Month lastMonthObject = list.get(list.size() - 1);
         final Portfolio.PortfolioOperation portfolioOperation = Optional.ofNullable(portfolioOperations.get(lastMonthObject))
-                .orElseGet(() -> new Portfolio.PortfolioOperation());
+                        .orElseGet(() -> new Portfolio.PortfolioOperation());
 
         final List<PortfolioTransaction> portfolioTransactions = Optional.ofNullable((portfolioOperation.getPortfolioTransactions()))
                 .orElseGet(() -> new LinkedList<>());
@@ -138,7 +138,8 @@ public class PortfolioService {
 
     public void executeUserCHANGEOperation(@NonNull final Portfolio portfolio,
                                            @NonNull final List<UserOperation> userOperations) {
-        final UserOperationALLOCATE operationAllocate = UserOperationALLOCATE.class.cast(fetchOperation(userOperations, allocate));
+        final UserOperationALLOCATE operationAllocate =
+                UserOperationALLOCATE.class.cast(fetchOperation(userOperations, allocate));
         final UserOperationSIP operationSIP = UserOperationSIP.class.cast(fetchOperation(userOperations, sip));
 
         final List<UserOperation> userCHANGEOperations = userOperations.stream()

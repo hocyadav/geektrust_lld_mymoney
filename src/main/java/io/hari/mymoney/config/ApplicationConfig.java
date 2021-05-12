@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 @Component
 @ConfigurationProperties(prefix = "app-config")
-public class AppConfig {
+public class ApplicationConfig {
     private Integer reBalanceLimit;
     private List<String> inputFileName;
 }
