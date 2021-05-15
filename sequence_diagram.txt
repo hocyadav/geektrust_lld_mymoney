@@ -1,0 +1,32 @@
+title MyMoney LLD
+
+note left of MainMethod : Step 0: Convert user input to userOperation
+MainMethod -> FileOperationService: input file contains all user operation (input.txt)
+FileOperationService -> FileOperationService:   convert each user input to userOperation object
+FileOperationService -> MainMethod : list of userOperation
+
+
+note left of MainMethod : Step 1: Calculate initial percentage
+alt IF first userOperation is ALLOCATE
+    MainMethod -> PortfolioService : send user operation
+    PortfolioService -> MainMethod : set initial percentange change
+else ELSE
+    PortfolioService -> MainMethod : Validation ERROR : Invalid first User Input
+end
+
+
+note left of MainMethod : Step 2: Execute all userOperation
+loop list of all userOperation
+    alt IF type is CHANGE
+    MainMethod->PortfolioService: send user operation
+    PortfolioService -> PortfolioService: validate & execute CHANGE operation
+    
+    else IF type is BALANCE
+    MainMethod->UserService: send user operation
+    UserService -> UserService: validate & execute BALANCE operation & print
+    
+    else IF type is REBALALNCE
+    MainMethod->UserService: send user operation
+    UserService -> UserService: validate & execute REBALANCE operation & print
+    end
+end
